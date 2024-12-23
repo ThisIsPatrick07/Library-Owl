@@ -1,0 +1,4 @@
+GET request -> Path : '/', From IP : ::1, Time : 1734940005628
+GET request -> Path : '/', From IP : ::1, Time : 1734940022431
+GET request -> Path : '/', From IP : ::1, Time : 1734940025484
+GET request -> Path : '/api/authors', From IP : ::1, Time : 1734940038854
