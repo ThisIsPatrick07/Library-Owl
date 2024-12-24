@@ -1,6 +1,10 @@
 const shortid = require('shortid');
 const User = require('../models/user.models.js');
-const { roles } = require('../config/roles.config.js');
+// const { roles } = require('../config/roles.config.js');
+const { preprocessUserInfoForCreation } = require('../utils/user.utils.js');
+const authService = require('../services/auth.services.js');
+const { trycatchWrapper } = require('../utils/wrapperFuncs.utils.js');
+
 
 const getAllUsers = async (req, res) => {
 	const allUsers = await User.find();
@@ -26,6 +30,10 @@ const deleteUser = async (req, res) => {
 
 	try {
 		await User.deleteOne({ userId : userId });
+		return res.json({
+			msg : `Successfully deleted user of ID : ${userId}`,
+			success : true,
+		});
 
 	} catch (error) {
 		console.error(error.message);
@@ -33,16 +41,12 @@ const deleteUser = async (req, res) => {
 			error : 'Error while signing up!',
 			msg : error.messsage,
 		});
-	}
-
-	return res.json({
-		msg : `Successfully deleted user of ID : ${userId}`,
-		success : true,
-	});
+	}	
 };
 
 const addNewUser = async (req, res) => {
-	const user = req.body;
+	const user = preprocessUserInfoForCreation(req.body);
+
 	const newUserId = shortid.generate();
 	
 	await User.create({
@@ -59,11 +63,32 @@ const addNewUser = async (req, res) => {
 	});
 };
 
-// const handleUserLogin;
+const handleUserLogin = trycatchWrapper(async (req, res) => {
+	const creds = req.body;
+	const user = await User.findOne({
+		email : creds.email,
+		password : creds.password,
+	});
+
+	if(!user){
+		return res.render('login', {
+			error : 'Invalid User Credentials!',
+		});
+	}
+
+	const token = authService.setUser(user);
+	res.cookie('uid', token);
+	return res.redirect('/');
+
+}, (error, req, res) => {
+	return res.status(500).json({ err : error.message });
+
+}, 'Error while trying to login!');
 
 module.exports = {
 	getAllUsers,
 	getUserById,
 	deleteUser,
 	addNewUser,
+	handleUserLogin,
 };
