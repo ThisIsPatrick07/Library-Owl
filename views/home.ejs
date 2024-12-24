@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>The Library-Owl🦉</title>
+</head>
+<body>
+	<h1>The One-Stop-Shop for all books! <span>🦉</span> </h1>
+	<% if(locals.nameOfUser) { %>
+		<h2>Hello <%= nameOfUser %>!</h2>
+	<% }  else {%>
+		<h2>Hi there traveller! Wanna join the party⬇️? Signup if you're new! Or Login if you're an old pal!</h2>
+	<% } %>
+</body>
+</html>

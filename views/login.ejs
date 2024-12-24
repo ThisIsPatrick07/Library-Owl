@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Login | The Library-Owl</title>
+
+	<style>
+		body {
+			background-color: #d48600;
+			color: #f4f4f4;
+		}
+
+		.error-msg {
+			color: red;
+		}
+
+		.info-msg {
+			color: lightblue;
+		}
+	</style>
+</head>
+<body>
+	<h1>Hop in and let's start reading!📖</h1>
+	<% if (locals.error) { %>
+		<h2 class="error-msg"><%= error %></h2>
+	<% } %>
+
+	<% if (locals.msg) { %>
+		<h2 class="info-msg"><%= msg %></h2>
+	<% } %>
+
+	<form method="post" action="/users/login">
+		<label for="email-input">E-mail</label>
+		<input type="text" name="email" id="email-input" required>
+		
+		<label for="password-input">Password</label>
+		<input type="text" name="password" id="password-input" required>
+
+		<button type="submit">Login</button>
+	</form>
+</body>
+</html>
